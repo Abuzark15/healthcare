@@ -1,0 +1,16 @@
+const express = require('express');
+const { requestConsultation, getConsultationsByPatient, updateConsultationStatus } = require('../controller/consultationController');
+const authMiddleware = require('../middleware/authMiddleware');
+const upload = require('../middleware/multer');
+const router = express.Router();
+
+// Request a consultation
+router.post('/', authMiddleware,upload.single('imagePath'), requestConsultation);
+
+// Get consultations by patient ID
+router.get('/:patientId', authMiddleware, getConsultationsByPatient);
+
+// Update consultation status by ID
+router.put('/:id/status', authMiddleware, updateConsultationStatus);
+
+module.exports = router;
