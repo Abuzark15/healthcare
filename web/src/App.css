@@ -1,0 +1,407 @@
+body {
+    margin: 0;
+    font-family: 'Arial', sans-serif;
+    background-image: url('path/to/your/background-image.jpg'); /* Add your image path here */
+    background-size: cover;
+    background-position: center;
+    color: black;
+}
+
+.landing-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    text-align: center;
+    background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent overlay */
+    animation: fadeIn 0.5s ease-out; /* Fade-in animation */
+}
+
+h1 {
+    font-size: 2.5rem;
+    margin-bottom: 20px;
+    animation: slideIn 0.5s ease-out; /* Slide-in animation */
+}
+
+button {
+    background-color: #4CAF50; /* Green background */
+    border: none;
+    color: white;
+    padding: 15px 25px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 1rem;
+    margin: 10px;
+    cursor: pointer;
+    border-radius: 5px;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+button:hover {
+    background-color: #45a049; /* Darker green */
+    transform: translateY(-2px) scale(1.05); /* Lift and scale effect */
+}
+
+/* Login CSS */
+.login-container {
+    display: flex;
+    height: 100vh;
+    animation: fadeIn 0.5s ease-out; /* Fade-in animation */
+}
+
+.left-image {
+    flex: 1;
+    background-image: url('https://images.bewakoof.com/web/rm-login-desk-v2.jpg'); /* Add your image path here */
+    background-size: cover;
+    background-position: center;
+}
+
+.right-content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+    background-color: rgba(255, 255, 255, 0.9); /* Light background for contrast */
+}
+
+h2 {
+    margin-bottom: 20px;
+    animation: slideIn 0.5s ease-out; /* Slide-in animation */
+}
+
+input {
+    margin: 10px 0;
+    padding: 10px;
+    width: 100%;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+button {
+    background-color: #4CAF50; /* Green background */
+    border: none;
+    color: white;
+    padding: 10px 20px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 1rem;
+    margin: 10px 0;
+    cursor: pointer;
+    border-radius: 5px;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+button:hover {
+    background-color: #45a049; /* Darker green */
+    transform: translateY(-2px) scale(1.05); /* Lift and scale effect */
+}
+
+/* Register CSS */
+.register-container {
+    display: flex;
+    height: 100vh;
+    animation: fadeIn 0.5s ease-out; /* Fade-in animation */
+}
+
+.left-image {
+    flex: 1;
+    background-image: url('https://mortgageautomation.com/static/media/character.626b5352.svg'); /* Add your image path here */
+    background-size: cover;
+    background-position: center;
+    background-size: contain;
+    background-repeat: no-repeat;
+}
+
+.right-content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+    background-color: rgba(255, 255, 255, 0.9); /* Light background for contrast */
+}
+
+h2 {
+    margin-bottom: 20px;
+    animation: slideIn 0.5s ease-out; /* Slide-in animation */
+}
+
+input {
+    margin: 10px 0;
+    padding: 10px;
+    width: 100%;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+button {
+    background-color: #4CAF50; /* Green background */
+    border: none;
+    color: white;
+    padding: 10px 20px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 1rem;
+    margin: 10px 0;
+    cursor: pointer;
+    border-radius: 5px;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+button:hover {
+    background-color: #45a049; /* Darker green */
+    transform: translateY(-2px) scale(1.05); /* Lift and scale effect */
+}
+
+/* Dashboard */
+.dashboard-container {
+    padding: 20px;
+    background-color: #f9f9f9;
+    min-height: 100vh;
+    animation: fadeIn 0.5s ease-out; /* Fade-in animation */
+}
+
+h1 {
+    color: #333;
+    margin-bottom: 20px;
+}
+
+button {
+    background-color: #4CAF50; /* Green background */
+    border: none;
+    color: white;
+    padding: 10px 20px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 1rem;
+    margin: 10px 5px;
+    cursor: pointer;
+    border-radius: 5px;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+button:hover {
+    background-color: #45a049; /* Darker green */
+    transform: translateY(-2px) scale(1.05); /* Lift and scale effect */
+}
+
+/* Optional: Style adjustments for the buttons when requests are shown */
+.request-list {
+    margin-top: 20px;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background-color: #fff;
+}
+
+/* Consultant */
+
+.make-appointment-container{
+    padding: 40px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
+.consultation-requests-container {
+    padding: 20px;
+    background-color: #ffffff;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    animation: fadeIn 0.5s ease-out; /* Fade-in animation */
+}
+
+h2 {
+    color: #333;
+    margin-bottom: 15px;
+}
+
+ul {
+    list-style-type: none; /* Remove bullet points */
+    padding: 0;
+}
+
+li {
+    padding: 15px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    margin-bottom: 10px;
+    background-color: #f9f9f9;
+    transition: transform 0.2s, background-color 0.2s;
+}
+
+li:hover {
+    transform: scale(1.02); /* Scale up effect on hover */
+    background-color: #eaeaea; /* Lighten background on hover */
+}
+
+strong {
+    color: #555;
+}
+
+button {
+    background-color: #007BFF; /* Blue background */
+    border: none;
+    color: white;
+    padding: 8px 15px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 0.9rem;
+    margin-right: 10px;
+    cursor: pointer;
+    border-radius: 5px;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+button:hover {
+    background-color: #0056b3; /* Darker blue */
+    transform: translateY(-2px) scale(1.05); /* Lift and scale effect */
+}
+
+button:last-child {
+    margin-top: 20px; /* Add space above the back button */
+}
+
+/* Doctor Fetch */
+.doctor-card {
+    display: flex;
+    align-items: center; /* Center vertically */
+    justify-content: space-between; /* Space between elements */
+    margin-bottom: 20px;
+    padding: 15px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    background-color: #fff;
+    width: 80%;
+    height: 30vh;
+   
+
+    transition: box-shadow 0.3s ease, transform 0.3s ease; /* Add transition for hover effect */
+}
+
+.doctor-info {
+    display: flex;
+    align-items: center;
+}
+
+.doctor-photo {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%; /* Circular image */
+    margin-right: 15px; /* Space between photo and text */
+}
+
+.doctor-details {
+    flex-grow: 1; /* Allow this to grow and take available space */
+}
+
+button {
+    background-color: #007BFF; /* Blue background */
+    border: none;
+    color: white;
+    padding: 10px 15px;
+    text-align: center;
+    text-decoration: none;
+    font-size: 0.9rem;
+    margin-left: 10px; /* Space between buttons */
+    cursor: pointer;
+    border-radius: 5px;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+button:hover {
+    background-color: #0056b3; /* Darker blue */
+    transform: translateY(-2px) scale(1.05); /* Lift and scale effect */
+}
+
+/* Keyframe animations */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes slideIn {
+    from {
+        opacity: 0;
+        transform: translateX(-20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+@keyframes pulse {
+    0%, 100% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.05);
+    }
+}
+
+/* Doctor card hover effect */
+.doctor-card:hover {
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2); /* Subtle shadow on hover */
+   
+}
+
+/* Apply pulse effect to specific buttons */
+button.pulse {
+    animation: pulse 2s infinite; /* Infinite pulse effect */
+}
+
+
+
+
+
+/* BookAppointment styles */
+.book-appointment-modal {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 400px; /* Set a width for the modal */
+    background-color: white;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    padding: 20px;
+    z-index: 1000; /* Ensure it appears above other content */
+}
+
+.book-appointment-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent overlay */
+    z-index: 999; /* Ensure it appears below the modal */
+}
+/* BookAppointment styles */
+.close-icon {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    cursor: pointer;
+    font-size: 20px; /* Adjust size as needed */
+    color: #333; /* Icon color */
+}

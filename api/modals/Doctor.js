@@ -1,6 +1,6 @@
+// models/Doctor.js
 const { Sequelize, DataTypes } = require('sequelize');
 const sequelize = require('../db-config/dbconfig');
-const bcrypt = require('bcrypt');
 
 const Doctor = sequelize.define('Doctor', {
     name: {
@@ -13,7 +13,7 @@ const Doctor = sequelize.define('Doctor', {
     },
     email: {
         type: DataTypes.STRING,
-        unique: true,
+
         allowNull: false,
     },
     password: {
@@ -22,6 +22,13 @@ const Doctor = sequelize.define('Doctor', {
     },
     profilePhoto: {
         type: DataTypes.STRING,
+    },
+    verificationToken: {
+        type: DataTypes.STRING,
+    },
+    verified: {
+        type: DataTypes.BOOLEAN,
+        defaultValue: false,
     },
 });
 

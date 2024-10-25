@@ -1,4 +1,4 @@
-const { Availability } = require('../modals/Availability');
+const  Availability  = require('../modals/Availability');
 
 // Create availability
 const createAvailability = async (req, res) => {

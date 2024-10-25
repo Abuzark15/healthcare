@@ -1,0 +1,63 @@
+/* Doctor card */
+.doctor-card {
+    display: flex;
+    align-items: center; /* Center vertically */
+    justify-content: flex-start; /* Align items to the start */
+    margin-bottom: 20px;
+    padding: 15px;
+    border: 1px solid #ddd;
+    border-radius: 8px; /* Slightly round corners */
+    background-color: #fff;
+    width: 80%; /* Make the card wider */
+    height: auto; /* Allow height to adjust automatically */
+    transition: box-shadow 0.3s ease, transform 0.3s ease; /* Add transition for hover effect */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Add subtle shadow */
+}
+
+.doctor-photo {
+    width: 120px; /* Increase width of the image */
+    height: 120px; /* Increase height of the image */
+    border-radius: 50%; /* Keep circular image */
+    margin-right: 15px; /* Space between photo and text */
+}
+
+.doctor-details {
+    flex-grow: 1; /* Allow this to grow and take available space */
+}
+
+/* Optionally style the doctor name and specialization */
+.doctor-name {
+    font-size: 1.5rem; /* Increase font size */
+    font-weight: bold;
+    color: #333;
+}
+
+.doctor-specialization {
+    color: #777; /* Lighter color for specialization */
+}
+
+/* General styles for MyAppointments */
+h2 {
+    color: #333;
+    margin-bottom: 20px;
+}
+
+button {
+    background-color: #4CAF50; /* Green background */
+    border: none;
+    color: white;
+    padding: 10px 20px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 1rem;
+    margin: 10px 0;
+    cursor: pointer;
+    border-radius: 5px;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+button:hover {
+    background-color: #45a049; /* Darker green */
+    transform: translateY(-2px) scale(1.05); /* Lift and scale effect */
+}

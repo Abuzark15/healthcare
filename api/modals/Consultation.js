@@ -1,18 +1,20 @@
 const { Sequelize, DataTypes } = require('sequelize');
 const sequelize = require('../db-config/dbconfig');
+const Patient = require('./Patient'); // Make sure the path is correct
+const Doctor = require('./Doctor'); // If applicable
 
 const Consultation = sequelize.define('Consultation', {
     patientId: {
         type: DataTypes.INTEGER,
         references: {
-            model: 'Patients',
+            model: 'Patients', // Make sure this matches your table name in the database
             key: 'id',
         },
     },
     doctorId: {
         type: DataTypes.INTEGER,
         references: {
-            model: 'Doctors',
+            model: 'Doctors', // Make sure this matches your table name in the database
             key: 'id',
         },
     },
@@ -23,6 +25,24 @@ const Consultation = sequelize.define('Consultation', {
     imagePath: {
         type: DataTypes.STRING,
     },
+    timeSlot: {
+        type: DataTypes.STRING, // or DataTypes.TIME, depending on your requirements
+        allowNull: false,
+    },
+    description: {
+        type: DataTypes.TEXT,
+        allowNull: true,
+    },
+});
+
+// Define associations after the model is defined
+Consultation.belongsTo(Patient, {
+    foreignKey: 'patientId',
+    targetKey: 'id',
+});
+Consultation.belongsTo(Doctor, {
+    foreignKey : 'doctorId',
+    targetKey: 'id',
 });
 
 module.exports = Consultation;

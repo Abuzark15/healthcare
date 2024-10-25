@@ -13,8 +13,12 @@ const Availability = sequelize.define('Availability', {
         type: DataTypes.DATE,
         allowNull: false,
     },
-    time: {
+    startTime: {
         type: DataTypes.STRING,
+        allowNull: false,
+    },
+    endTime: {
+        type: DataTypes.STRING, 
         allowNull: false,
     },
 });

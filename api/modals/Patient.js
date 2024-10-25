@@ -1,6 +1,5 @@
 const { Sequelize, DataTypes } = require('sequelize');
 const sequelize = require('../db-config/dbconfig');
-const bcrypt = require('bcrypt');
 
 const Patient = sequelize.define('Patient', {
     name: {
@@ -9,7 +8,6 @@ const Patient = sequelize.define('Patient', {
     },
     email: {
         type: DataTypes.STRING,
-        unique: true,
         allowNull: false,
     },
     password: {
@@ -17,8 +15,6 @@ const Patient = sequelize.define('Patient', {
         allowNull: false,
     },
 });
-
-// Hash password before creating a patient
 
 
 module.exports = Patient;

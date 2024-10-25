@@ -42,7 +42,7 @@ const loginPatient = async (req, res) => {
     }
 
     const token = jwt.sign({ id: patient.id }, 'abuzar', { expiresIn: '1h' });
-    res.json({ token });
+    res.json({patient, token });
 };
 
 // Additional functions (if needed) can be added here...
