@@ -36,8 +36,6 @@ const deleteAvailability = async (req, res) => {
     }
 };
 
-// Additional functions (if needed) can be added here...
-
 module.exports = {
     createAvailability,
     getAvailabilityByDoctor,

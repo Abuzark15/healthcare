@@ -4,16 +4,20 @@ const Patient = require('../modals/Patient');
 
 
 const requestConsultation = async (req, res) => {
-    const { patientId, doctorId, timeSlot, description } = req.body; // Add timeSlot and description
-    const imagePath = req.file ? req.file.path : null; 
+    const { patientId, doctorId, timeSlot, description, date} = req.body;
+    // Collect all uploaded image paths
+    const imagePaths = req.files ? req.files.map(file => file.path) : [];
+
     try {
         const consultation = await Consultation.create({
             patientId,
             doctorId,
-            timeSlot, // Include the timeSlot
-            description, // Include the description
-            imagePath,
+            timeSlot,
+            date,
+            description,
+            imagePath: JSON.stringify(imagePaths), // Store as a JSON string
         });
+
         res.status(201).json(consultation);
     } catch (error) {
         res.status(400).json({ error: error.message });

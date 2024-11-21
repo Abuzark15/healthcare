@@ -6,10 +6,11 @@ const jwt = require('jsonwebtoken');
 const JWT_SECRET = 'abuzar'; 
 
 const login = async (req, res) => {
-    const { email, password } = req.body;
+    const { email, password, role } = req.body;
 
     try {
         // Check in the Patient model
+       if(role === 'patient'){
         let user = await Patient.findOne({ where: { email } });
         if (user) {
             const match = await bcrypt.compare(password, user.password);
@@ -18,6 +19,7 @@ const login = async (req, res) => {
                 return res.status(200).json({ token, user });
             }
         }
+       }else{
 
         // Check in the Doctor model
         user = await Doctor.findOne({ where: { email } });
@@ -28,6 +30,7 @@ const login = async (req, res) => {
                 return res.status(200).json({ token, user });
             }
         }
+    }
 
         return res.status(401).json({ message: 'Invalid credentials' });
     } catch (error) {

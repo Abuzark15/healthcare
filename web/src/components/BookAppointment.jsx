@@ -1,13 +1,83 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import AppointmentDetails from './AppointmentDetails'; // Import the new component
-
 
 const BookAppointment = ({ doctorId, onBack }) => {
     const [selectedDate, setSelectedDate] = useState('');
     const [timeSlots, setTimeSlots] = useState([]);
     const [selectedSlot, setSelectedSlot] = useState(null);
     const [errorMessage, setErrorMessage] = useState('');
+    const [currentTime, setCurrentTime] = useState(new Date()); // Initialize current time
+    const [slotStatuses, setSlotStatuses] = useState({}); // Store status of each slot
+
+    // Update current time every minute to keep it accurate
+    useEffect(() => {
+        const interval = setInterval(() => {
+            setCurrentTime(new Date());
+        }, 60000); // Update every minute
+        return () => clearInterval(interval);
+    }, []);
+
+    // Function to parse a time string and return a Date object (for comparison)
+    const parseTime = (timeStr, date) => {
+        const [hours, minutes] = timeStr.split(':').map(Number);
+
+        // Create a Date object for the parsed time, based on the selected date
+        const parsedDate = new Date(date);
+        parsedDate.setHours(hours, minutes, 0, 0);
+        return parsedDate;
+    };
+
+    // Function to generate available time slots
+    const generateTimeSlots = (startTime, endTime, date) => {
+        const slots = [];
+        let currentStart = parseTime(startTime, date);
+        let currentEnd = parseTime(endTime, date);
+
+        // Only add slots that are in the future compared to the current time
+        while (currentStart < currentEnd) {
+            let nextStart = new Date(currentStart);
+            let nextEnd = new Date(currentStart);
+            nextEnd.setMinutes(currentStart.getMinutes() + 30);
+
+            // Compare the slot start time with current time
+            if (nextStart >= currentTime) {
+                const startStr = nextStart.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: false });
+                const endStr = nextEnd.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: false });
+                slots.push(`${startStr} - ${endStr}`);
+            }
+            currentStart = nextEnd;
+        }
+
+        return slots;
+    };
+
+    // Function to fetch status of the time slots
+    const fetchSlotStatuses = async (date) => {
+        const token = localStorage.getItem('Authorization');
+        try {
+            const response = await axios.get(`http://localhost:2549/api/consultations/${doctorId}`, {
+                headers: {
+                    Authorization: `Bearer ${token}`
+                }
+            });
+
+            // Store the statuses of slots by date
+            const slotStatusMap = response.data.reduce((acc, slot) => {
+                const slotDate = new Date(slot.date).toISOString().split('T')[0];
+                if (slotDate === date) {
+                    const timeSlot = slot.timeSlot; // Assuming the time is in `slot.timeSlot`
+                    acc[timeSlot] = slot.status; // { timeSlot: status }
+                }
+                return acc;
+            }, {});
+
+            setSlotStatuses(slotStatusMap);
+        } catch (error) {
+            console.error('Error fetching slot statuses:', error);
+            setErrorMessage('An error occurred while fetching appointment statuses.');
+        }
+    };
 
     const handleDateChange = (event) => {
         setSelectedDate(event.target.value);
@@ -16,7 +86,7 @@ const BookAppointment = ({ doctorId, onBack }) => {
     const fetchTimeSlots = async (date) => {
         const token = localStorage.getItem('Authorization');
         try {
-            const response = await axios.get(`http://localhost:2549/api/availability/${doctorId}`, {
+            const response = await axios.get(`http://localhost:2549/api/availability/get/${doctorId}`, {
                 headers: {
                     Authorization: `Bearer ${token}`
                 }
@@ -24,10 +94,15 @@ const BookAppointment = ({ doctorId, onBack }) => {
 
             const availableSlots = response.data.filter(slot => {
                 const slotDate = new Date(slot.date).toISOString().split('T')[0];
-                return slotDate === date; 
-            }).map(slot => `${slot.startTime} - ${slot.endTime}`);
+                return slotDate === date;
+            }).map(slot => {
+                return generateTimeSlots(slot.startTime, slot.endTime, date);
+            }).flat();
 
             setTimeSlots(availableSlots);
+
+            // Fetch status for the selected date after fetching the slots
+            fetchSlotStatuses(date);
 
             if (availableSlots.length === 0) {
                 setErrorMessage('Doctor is not available on this date.');
@@ -46,18 +121,27 @@ const BookAppointment = ({ doctorId, onBack }) => {
             fetchTimeSlots(selectedDate);
         }
     };
- 
+
     const handleSlotSelection = (slot) => {
-        setSelectedSlot(slot);
+        // Only allow slot selection if it's not reserved
+        if (!isSlotDisabled(slot)) {
+            setSelectedSlot(slot);
+        }
     };
 
     const handleBackToSlots = () => {
         setSelectedSlot(null);
-        setTimeSlots([]); 
+        setTimeSlots([]);
     };
 
     const handleClose = () => {
-        onBack(); // Call onBack to close the modal
+        onBack();
+    };
+
+    // Check if a slot is disabled based on its status
+    const isSlotDisabled = (slot) => {
+        const slotStatus = slotStatuses[slot];
+        return slotStatus === 'Pending' || slotStatus === 'Accepted';
     };
 
     return (
@@ -65,7 +149,7 @@ const BookAppointment = ({ doctorId, onBack }) => {
             <div className="book-appointment-overlay" onClick={onBack}></div>
             <div className="book-appointment-modal">
                 <span className="close-icon" onClick={handleClose}>
-                    &times; {/* X character */}
+                    &times;
                 </span>
                 {!selectedSlot ? (
                     <>
@@ -80,23 +164,21 @@ const BookAppointment = ({ doctorId, onBack }) => {
                             <button type="submit">Check Availability</button>
                         </form>
 
-                        {errorMessage && <div style={{ color: 'red' }}>{errorMessage}</div>}
+                        {errorMessage && <div className="error-message">{errorMessage}</div>}
 
                         {timeSlots.length > 0 && (
                             <div>
                                 <h4>Available Time Slots</h4>
                                 <ul>
                                     {timeSlots.map((slot) => (
-                                        <li 
-                                            key={slot} 
-                                            onClick={() => handleSlotSelection(slot)} 
-                                            style={{ 
-                                                cursor: 'pointer', 
-                                                backgroundColor: selectedSlot === slot ? '#d3d3d3' : 'transparent',
-                                                padding: '5px',
-                                                margin: '5px 0',
-                                                border: '1px solid #ccc',
-                                                borderRadius: '4px'
+                                        <li
+                                            key={slot}
+                                            onClick={() => handleSlotSelection(slot)}
+                                            className={selectedSlot === slot ? 'selected' : ''}
+                                            style={{
+                                                cursor: isSlotDisabled(slot) ? 'not-allowed' : 'pointer',
+                                                color: isSlotDisabled(slot) ? 'gray' : 'black',
+                                                textDecoration: isSlotDisabled(slot) ? 'line-through' : 'none',
                                             }}
                                         >
                                             {slot}
@@ -105,11 +187,14 @@ const BookAppointment = ({ doctorId, onBack }) => {
                                 </ul>
                             </div>
                         )}
-
-                        {/* Removed the back button */}
                     </>
                 ) : (
-                    <AppointmentDetails doctorid={doctorId} selectedSlot={selectedSlot} onBack={handleBackToSlots} />
+                    <AppointmentDetails 
+                        doctorid={doctorId} 
+                        selectedSlot={selectedSlot} 
+                        selectedDate={selectedDate}
+                        onBack={handleBackToSlots} 
+                    />
                 )}
             </div>
         </>

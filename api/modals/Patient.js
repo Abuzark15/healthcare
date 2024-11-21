@@ -10,6 +10,10 @@ const Patient = sequelize.define('Patient', {
         type: DataTypes.STRING,
         allowNull: false,
     },
+    role:{
+        type: DataTypes.STRING,
+        defaultValue : "patient"
+    },
     password: {
         type: DataTypes.STRING,
         allowNull: false,

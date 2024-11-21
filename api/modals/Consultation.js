@@ -19,14 +19,18 @@ const Consultation = sequelize.define('Consultation', {
         },
     },
     status: {
-        type: DataTypes.ENUM('Accepted', 'Confirmed', 'Completed'),
-        defaultValue: 'Accepted',
+        type: DataTypes.ENUM('Pending','Accepted','Rejected', 'Completed'),
+        defaultValue: 'Pending',
     },
     imagePath: {
         type: DataTypes.STRING,
     },
     timeSlot: {
-        type: DataTypes.STRING, // or DataTypes.TIME, depending on your requirements
+        type: DataTypes.STRING,
+       
+    },
+    date: {
+        type: DataTypes.DATE,
         allowNull: false,
     },
     description: {
@@ -44,5 +48,6 @@ Consultation.belongsTo(Doctor, {
     foreignKey : 'doctorId',
     targetKey: 'id',
 });
+
 
 module.exports = Consultation;

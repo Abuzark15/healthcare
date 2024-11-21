@@ -7,6 +7,7 @@ const Login = () => {
     const [formData, setFormData] = useState({
         email: '',
         password: '',
+        role: 'patient', // Default role is 'patient'
     });
 
     const handleChange = (e) => {
@@ -18,6 +19,7 @@ const Login = () => {
         e.preventDefault();
         
         try {
+            // Send the form data with the role as part of the request
             const response = await axios.post('http://localhost:2549/api/common/login', formData);
             console.log(response.data);
         
@@ -26,7 +28,8 @@ const Login = () => {
                 localStorage.setItem('Id', response.data.user.id);
                 console.log('Login successful, navigating to home...');
                 
-                if (response.data.user.specialization) {
+                // Navigate based on the role from the API response
+                if (response.data.user.role === 'doctor') {
                     navigate('/doctor-dashboard');
                 } else {
                     navigate('/patient-dashboard');
@@ -42,9 +45,47 @@ const Login = () => {
             <div className="left-image"></div>
             <div className="right-content">
                 <h2>Login to Your Account</h2>
+
+                {/* Radio buttons for selecting role */}
+                <div style={{ display: 'flex', justifyContent: 'center', marginBottom: '20px' }}>
+                    <label style={{ margin: '0 10px' }}>
+                        <input 
+                            type="radio" 
+                            name="role" 
+                            value="doctor" 
+                            checked={formData.role === 'doctor'} 
+                            onChange={handleChange} 
+                        />
+                        Doctor
+                    </label>
+                    <label style={{ margin: '0 10px' }}>
+                        <input 
+                            type="radio" 
+                            name="role" 
+                            value="patient" 
+                            checked={formData.role === 'patient'} 
+                            onChange={handleChange} 
+                        />
+                        Patient
+                    </label>
+                </div>
+
+                {/* Login Form */}
                 <form onSubmit={handleSubmit}>
-                    <input type="email" name="email" placeholder="Email" onChange={handleChange} required />
-                    <input type="password" name="password" placeholder="Password" onChange={handleChange} required />
+                    <input 
+                        type="email" 
+                        name="email" 
+                        placeholder="Email" 
+                        onChange={handleChange} 
+                        required 
+                    />
+                    <input 
+                        type="password" 
+                        name="password" 
+                        placeholder="Password" 
+                        onChange={handleChange} 
+                        required 
+                    />
                     <button type="submit">Login</button>
                 </form>
                 <button onClick={() => navigate('/')}>Back</button>

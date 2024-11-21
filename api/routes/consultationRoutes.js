@@ -5,7 +5,7 @@ const upload = require('../middleware/multer');
 const router = express.Router();
 
 // Request a consultation
-router.post('/', authMiddleware,upload.single('imagePath'), requestConsultation);
+router.post('/', authMiddleware, upload.array('imagePath', 5), requestConsultation);
 
 // Get consultations by patient ID
 router.get('/:doctorId', authMiddleware, getConsultationsByPatient);

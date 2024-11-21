@@ -1,19 +1,20 @@
-// AppointmentDetails.js
+// components/AppointmentDetails.js
+
 import React, { useState } from 'react';
 import axios from 'axios';
 
-const AppointmentDetails = ({ doctorid, selectedSlot, onBack }) => {
+const AppointmentDetails = ({ doctorid, selectedSlot, onBack, selectedDate }) => {
     const [description, setDescription] = useState('');
-    const [image, setImage] = useState(null);
+    const [images, setImages] = useState([]); // Store multiple images
 
     const handleImageChange = (event) => {
-        setImage(event.target.files[0]); 
+        const files = Array.from(event.target.files); // Convert FileList to array
+        setImages(files); // Store the selected files
     };
 
     const handleBookAppointment = async () => {
         const token = localStorage.getItem('Authorization');
-        const id = localStorage.getItem('Id')
-        const patientId = id;
+        const patientId = localStorage.getItem('Id');
         const doctorId = doctorid;
 
         // Create FormData to handle file upload
@@ -21,10 +22,13 @@ const AppointmentDetails = ({ doctorid, selectedSlot, onBack }) => {
         formData.append('patientId', patientId);
         formData.append('doctorId', doctorId);
         formData.append('timeSlot', selectedSlot);
+        formData.append('date', selectedDate);
         formData.append('description', description);
-        if (image) {
-            formData.append('imagePath', image); // Append the image file
-        }
+
+        // Append each selected image to FormData
+        images.forEach((image) => {
+            formData.append('imagePath', image);
+        });
 
         try {
             const response = await axios.post('http://localhost:2549/api/consultations/', formData, {
@@ -35,16 +39,17 @@ const AppointmentDetails = ({ doctorid, selectedSlot, onBack }) => {
             });
 
             console.log('Appointment booked:', response.data);
-            // Handle success (e.g., show a success message or redirect)
+            // Handle success (e.g., show success message or redirect)
         } catch (error) {
             console.error('Error booking appointment:', error);
-            // Handle error (e.g., show an error message)
+            // Handle error (e.g., show error message)
         }
     };
 
     return (
         <div>
             <h4>Confirm Appointment</h4>
+            <p>Selected Date: {selectedDate}</p>
             <p>Selected Time Slot: {selectedSlot}</p>
             <textarea 
                 value={description}
@@ -53,8 +58,9 @@ const AppointmentDetails = ({ doctorid, selectedSlot, onBack }) => {
             />
             <input 
                 type="file"
+                multiple // Allow multiple file selection
                 onChange={handleImageChange}
-               // accept="image/*" // Limit file type to images
+                accept="image/*" // Restrict to image files
             />
             <button onClick={handleBookAppointment}>Book Appointment</button>
             <button onClick={onBack}>Back to Time Slots</button>

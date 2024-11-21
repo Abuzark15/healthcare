@@ -12,7 +12,6 @@ const availabilityRoutes = require('./routes/availabilityRoutes');
 const consultationRoutes = require('./routes/consultationRoutes');
 const loginRoutes = require('./routes/loginRoutes');
 
-
 app.use('/uploads', express.static('uploads'));
 
 app.use('/api/patients', userRoutes);
@@ -20,6 +19,7 @@ app.use('/api/doctors', doctorRoutes);
 app.use('/api/availability', availabilityRoutes);
 app.use('/api/consultations', consultationRoutes);
 app.use('/api/common' ,loginRoutes);
+
 
 
 

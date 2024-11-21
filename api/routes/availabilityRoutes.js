@@ -4,12 +4,12 @@ const authMiddleware = require('../middleware/authMiddleware');
 const router = express.Router();
 
 // Create availability
-router.post('/', authMiddleware, createAvailability);
+router.post('/create', authMiddleware, createAvailability);
 
 // Get availability by doctor ID
-router.get('/:doctorId', authMiddleware, getAvailabilityByDoctor);
+router.get('/get/:doctorId', authMiddleware, getAvailabilityByDoctor);
 
 // Delete availability by ID
-router.delete('/:id', authMiddleware, deleteAvailability);
+router.delete('/delete/:id', authMiddleware, deleteAvailability);
 
 module.exports = router;

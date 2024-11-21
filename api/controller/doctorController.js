@@ -7,10 +7,12 @@ const crypto = require('crypto');
 
 // Configure Nodemailer
 const transporter = nodemailer.createTransport({
-    service: 'Gmail', // Use your email service
+    host: 'smtp.gmail.com', // Use your email service
+    port: 587,
+    secure: false,
     auth: {
         user: "shoyabkhan.smartdata@gmail.com", // Your email
-        pass: "jrwo msfp hqhw pcdw", // Your email password
+        pass: "qylw xmjf xwdq wtnb", // Your email password
     },
 });
 
@@ -21,12 +23,23 @@ const sendVerificationEmail = async (req, res) => {
     const token = crypto.randomBytes(32).toString('hex');
     
     // Save token in database or associated with doctor
-    await Doctor.update({ verificationToken: token }, { where: { email } });
+    const existingDoctor = await Doctor.findOne({ where: { email } });
+    if (existingDoctor) {
+        return res.status(400).send('Email already exists');
+    }
+
+    // Create a new doctor record with the email and verification token
+    await Doctor.create({
+        email,
+        verificationToken: token,
+        verified: false, // Initially unverified
+    });
+
 
     const verificationLink = `http://localhost:5173/register-doctor?token=${token}&email=${email}`;
     
     const mailOptions = {
-        from: process.env.EMAIL,
+        from: 'shoyabkhan.smartdata@gmail.com',
         to: email,
         subject: 'Email Verification',
         html: `<p>Please verify your email by clicking on the link: <a href="${verificationLink}">Verify Email</a></p>`,
@@ -34,7 +47,10 @@ const sendVerificationEmail = async (req, res) => {
 
     transporter.sendMail(mailOptions, (error) => {
         if (error) {
+            console.log(error, "hfhgf");
             return res.status(500).send(error.toString());
+            
+            
         }
         res.status(200).send('Verification email sent');
     });
@@ -51,7 +67,7 @@ const verifyEmail = async (req, res) => {
 
     await Doctor.update({ verified: true, verificationToken: null }, { where: { email } });
     res.send('Email verified successfully');
-};
+};  
 
 // Register a new doctor
 const registerDoctor = async (req, res) => {
@@ -59,16 +75,16 @@ const registerDoctor = async (req, res) => {
     const profilePhoto = req.file.path; // Ensure image is uploaded
 
     try {
-        const newDoctor = await Doctor.create({
+        const hashedPassword = await bcrypt.hash(password, 10);
+        console.log(hashedPassword);
+        const newDoctor = await Doctor.update({
             name,
             specialization,
             email,
-            password, // Password will be hashed by the beforeCreate hook
-            profilePhoto
-        });
-
-        // Send verification email after registration
-        await sendVerificationEmail(req, res); // Send verification email
+            password: hashedPassword,
+            profilePhoto,
+            verified: true, // Mark as verified since email is verified
+        }, { where: { email } }); // Send verification email
 
         res.status(201).json(newDoctor);
     } catch (error) {
